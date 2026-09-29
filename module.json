@@ -65,9 +65,9 @@
       }
     }
   ],
-  "url": "https://github.com/NeroHeiser/itensmagicos",
-  "manifest": "https://raw.githubusercontent.com/NeroHeiser/itensmagicos/main/module.json",
-  "download": "https://github.com/NeroHeiser/itensmagicos/archive/refs/heads/main.zip",
-  "readme": "https://github.com/NeroHeiser/itensmagicos/blob/main/README.md",
-  "bugs": "https://github.com/NeroHeiser/itensmagicos/issues"
+  "url": "https://github.com/NeroHeiser/itensdndmagic",
+  "manifest": "https://raw.githubusercontent.com/NeroHeiser/itensdndmagic/main/module.json",
+  "download": "https://github.com/NeroHeiser/itensdndmagic/archive/refs/heads/main.zip",
+  "readme": "https://github.com/NeroHeiser/itensdndmagic/blob/main/README.md",
+  "bugs": "https://github.com/NeroHeiser/itensdndmagic/issues"
 }

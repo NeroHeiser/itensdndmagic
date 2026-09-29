@@ -72,7 +72,7 @@ graph TD
 Install directly within the Foundry VTT Setup menu using the manifest link:
 
 ```text
-https://raw.githubusercontent.com/NeroHeiser/itensmagicos/main/module.json
+https://raw.githubusercontent.com/NeroHeiser/itensdndmagic/main/module.json
 ```
 
 Or extract the repository archive into your Foundry data folder:

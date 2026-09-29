@@ -62,7 +62,7 @@ Módulo completo de itens mágicos para **Foundry Virtual Tabletop (V12 a V14)**
 No painel de configuração do Foundry VTT, em **Instalar Módulo**, cole o link do manifesto:
 
 ```text
-https://raw.githubusercontent.com/NeroHeiser/itensmagicos/main/module.json
+https://raw.githubusercontent.com/NeroHeiser/itensdndmagic/main/module.json
 ```
 
 Ou extraia o diretório compactado na pasta de módulos do Foundry:
