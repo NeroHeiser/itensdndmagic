@@ -1,5 +1,6 @@
 import { CompendiumSync } from "./compendium-sync.mjs";
 import { MidiQOLCompat } from "./midi-qol-compat.mjs";
+import { MagicItemEngine } from "./domain/magic-item-engine.mjs";
 
 const MODULE_ID = "itensmagicos";
 
@@ -24,7 +25,8 @@ Hooks.once("ready", () => {
     module.api = {
       MODULE_ID,
       CompendiumSync,
-      MidiQOLCompat
+      MidiQOLCompat,
+      MagicItemEngine
     };
   }
 });
