@@ -2,13 +2,44 @@
   "ITENSMAGICOS": {
     "Title": "Magic Items",
     "Description": "Magic items expansion and automation for D&D 5e.",
+    "Rarity": {
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "veryRare": "Very Rare",
+      "legendary": "Legendary",
+      "artifact": "Artifact"
+    },
+    "Type": {
+      "weapon": "Weapon",
+      "equipment": "Equipment",
+      "consumable": "Consumable"
+    },
     "Browser": {
       "Title": "Magic Items Browser",
       "SearchPlaceholder": "Search magic items...",
+      "ClearFilters": "Clear Filters",
       "FilterRarity": "Filter by Rarity",
+      "AllRarities": "All Rarities",
       "FilterType": "Filter by Type",
-      "FilterAttunement": "Attunement",
-      "GrantItem": "Send to Sheet"
+      "AllTypes": "All Types",
+      "FilterAttunement": "Filter by Attunement",
+      "AttunementAll": "Attunement: All",
+      "AttunementRequired": "Requires Attunement",
+      "AttunementNone": "No Attunement",
+      "FilterVolume": "Filter by Volume",
+      "AllVolumes": "All Volumes",
+      "Showing": "Showing",
+      "Items": "items",
+      "NoItemsFound": "No magic items match the active filters.",
+      "RequiresAttunement": "Requires Attunement",
+      "MarketPrice": "Estimated Market Price",
+      "TargetActor": "Target Character",
+      "GrantItem": "Send to Sheet",
+      "AttunementSlots": "Attunement Slots",
+      "SelectItemPrompt": "Select an item from the list to preview details.",
+      "NoActorSelected": "Please select a target character sheet first.",
+      "ItemGranted": "Granted {item} to {actor}."
     }
   }
 }

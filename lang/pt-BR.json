@@ -2,13 +2,44 @@
   "ITENSMAGICOS": {
     "Title": "Itens Mágicos",
     "Description": "Expansão e catálogo de itens mágicos para D&D 5e.",
+    "Rarity": {
+      "common": "Comum",
+      "uncommon": "Incomum",
+      "rare": "Raro",
+      "veryRare": "Muito Raro",
+      "legendary": "Lendário",
+      "artifact": "Artefato"
+    },
+    "Type": {
+      "weapon": "Arma",
+      "equipment": "Equipamento",
+      "consumable": "Consumível"
+    },
     "Browser": {
       "Title": "Catálogo de Itens Mágicos",
       "SearchPlaceholder": "Buscar itens mágicos...",
+      "ClearFilters": "Limpar Filtros",
       "FilterRarity": "Filtrar por Raridade",
+      "AllRarities": "Todas as Raridades",
       "FilterType": "Filtrar por Tipo",
-      "FilterAttunement": "Sintonização",
-      "GrantItem": "Enviar para Ficha"
+      "AllTypes": "Todos os Tipos",
+      "FilterAttunement": "Filtrar por Sintonização",
+      "AttunementAll": "Sintonização: Todos",
+      "AttunementRequired": "Requer Sintonização",
+      "AttunementNone": "Sem Sintonização",
+      "FilterVolume": "Filtrar por Volume",
+      "AllVolumes": "Todos os Volumes",
+      "Showing": "Exibindo",
+      "Items": "itens",
+      "NoItemsFound": "Nenhum item mágico corresponde aos filtros ativos.",
+      "RequiresAttunement": "Requer Sintonização",
+      "MarketPrice": "Preço Estimado de Mercado",
+      "TargetActor": "Personagem Alvo",
+      "GrantItem": "Enviar para Ficha",
+      "AttunementSlots": "Espaços de Sintonização",
+      "SelectItemPrompt": "Selecione um item da lista para ver os detalhes.",
+      "NoActorSelected": "Por favor, selecione primeiro uma ficha de personagem alvo.",
+      "ItemGranted": "{item} foi enviado para a ficha de {actor}."
     }
   }
 }

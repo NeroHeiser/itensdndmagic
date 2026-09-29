@@ -1,0 +1,154 @@
+<div class="itensmagicos-browser-container">
+  <!-- Controls and Filter Bar -->
+  <header class="browser-controls">
+    <div class="search-box">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="searchQuery" value="{{searchQuery}}" placeholder="{{localize 'ITENSMAGICOS.Browser.SearchPlaceholder'}}" autocomplete="off" />
+      {{#if searchQuery}}
+      <button type="button" class="btn-clear-search" data-action="clearFilters" title="{{localize 'ITENSMAGICOS.Browser.ClearFilters'}}">
+        <i class="fas fa-times"></i>
+      </button>
+      {{/if}}
+    </div>
+
+    <div class="filter-group">
+      <select name="filterRarity" title="{{localize 'ITENSMAGICOS.Browser.FilterRarity'}}">
+        <option value="all" {{#if (eq selectedRarity "all")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Browser.AllRarities'}}</option>
+        <option value="common" {{#if (eq selectedRarity "common")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Rarity.common'}}</option>
+        <option value="uncommon" {{#if (eq selectedRarity "uncommon")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Rarity.uncommon'}}</option>
+        <option value="rare" {{#if (eq selectedRarity "rare")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Rarity.rare'}}</option>
+        <option value="veryRare" {{#if (eq selectedRarity "veryRare")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Rarity.veryRare'}}</option>
+        <option value="legendary" {{#if (eq selectedRarity "legendary")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Rarity.legendary'}}</option>
+        <option value="artifact" {{#if (eq selectedRarity "artifact")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Rarity.artifact'}}</option>
+      </select>
+
+      <select name="filterType" title="{{localize 'ITENSMAGICOS.Browser.FilterType'}}">
+        <option value="all" {{#if (eq selectedType "all")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Browser.AllTypes'}}</option>
+        <option value="weapon" {{#if (eq selectedType "weapon")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Type.weapon'}}</option>
+        <option value="equipment" {{#if (eq selectedType "equipment")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Type.equipment'}}</option>
+        <option value="consumable" {{#if (eq selectedType "consumable")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Type.consumable'}}</option>
+      </select>
+
+      <select name="filterAttunement" title="{{localize 'ITENSMAGICOS.Browser.FilterAttunement'}}">
+        <option value="all" {{#if (eq selectedAttunement "all")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Browser.AttunementAll'}}</option>
+        <option value="required" {{#if (eq selectedAttunement "required")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Browser.AttunementRequired'}}</option>
+        <option value="none" {{#if (eq selectedAttunement "none")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Browser.AttunementNone'}}</option>
+      </select>
+
+      <select name="filterVolume" title="{{localize 'ITENSMAGICOS.Browser.FilterVolume'}}">
+        <option value="all" {{#if (eq selectedVolume "all")}}selected{{/if}}>{{localize 'ITENSMAGICOS.Browser.AllVolumes'}}</option>
+        <option value="years-1-3" {{#if (eq selectedVolume "years-1-3")}}selected{{/if}}>Years 1–3</option>
+        <option value="year-4" {{#if (eq selectedVolume "year-4")}}selected{{/if}}>Year 4</option>
+        <option value="year-5" {{#if (eq selectedVolume "year-5")}}selected{{/if}}>Year 5</option>
+        <option value="year-6" {{#if (eq selectedVolume "year-6")}}selected{{/if}}>Year 6</option>
+        <option value="year-7" {{#if (eq selectedVolume "year-7")}}selected{{/if}}>Year 7</option>
+      </select>
+
+      <button type="button" class="btn-reset-filters" data-action="clearFilters" title="{{localize 'ITENSMAGICOS.Browser.ClearFilters'}}">
+        <i class="fas fa-undo"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="browser-body">
+    <!-- Items List Column -->
+    <section class="items-list-column">
+      <div class="items-count-banner">
+        <span>{{localize 'ITENSMAGICOS.Browser.Showing'}} <strong>{{items.length}}</strong> / {{filteredCount}} {{localize 'ITENSMAGICOS.Browser.Items'}}</span>
+      </div>
+
+      <div class="items-scroll-list">
+        {{#each items}}
+        <div class="item-card-row {{#if (eq this._id ../selectedItemId)}}active{{/if}}" data-action="selectItem" data-item-id="{{this._id}}">
+          <img class="item-thumbnail" src="{{this.img}}" alt="{{this.name}}" />
+          <div class="item-info">
+            <span class="item-name">{{this.name}}</span>
+            <div class="item-badges">
+              <span class="badge badge-rarity {{this.system.rarity}}">{{this.system.rarity}}</span>
+              <span class="badge badge-type">{{this.type}}</span>
+              {{#if this.system.attunement}}
+              <span class="badge badge-attunement" title="{{localize 'ITENSMAGICOS.Browser.RequiresAttunement'}}">
+                <i class="fas fa-link"></i>
+              </span>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        {{else}}
+        <div class="empty-state">
+          <i class="fas fa-search-minus"></i>
+          <p>{{localize 'ITENSMAGICOS.Browser.NoItemsFound'}}</p>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+
+    <!-- Item Details Preview Column -->
+    <section class="item-details-column">
+      {{#if selectedItem}}
+      <article class="item-sheet-preview">
+        <header class="preview-header">
+          <img class="preview-image" src="{{selectedItem.img}}" alt="{{selectedItem.name}}" />
+          <div class="preview-title-block">
+            <h2 class="preview-name">{{selectedItem.name}}</h2>
+            <div class="preview-meta">
+              <span class="badge badge-rarity {{selectedItem.system.rarity}}">{{selectedItem.system.rarity}}</span>
+              <span class="badge badge-type">{{selectedItem.type}}</span>
+              {{#if selectedItem.system.attunement}}
+              <span class="badge badge-attunement">{{localize 'ITENSMAGICOS.Browser.RequiresAttunement'}}</span>
+              {{/if}}
+              <span class="source-tag">{{selectedItem.flags.itensmagicos.book}}</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Pricing and Attribution Bar -->
+        <div class="pricing-card">
+          <div class="price-field">
+            <span class="price-label">{{localize 'ITENSMAGICOS.Browser.MarketPrice'}}:</span>
+            <strong class="price-val">{{priceInfo.standard}} gp</strong>
+            <small class="price-range">({{priceInfo.min}}–{{priceInfo.max}} gp)</small>
+          </div>
+        </div>
+
+        <!-- Target Actor and Grant Action -->
+        <div class="grant-action-bar">
+          <div class="actor-select-wrapper">
+            <label for="targetActor">{{localize 'ITENSMAGICOS.Browser.TargetActor'}}:</label>
+            <select id="targetActor" name="targetActor" data-action="selectActor">
+              {{#each actors}}
+              <option value="{{this.id}}" {{#if (eq this.id ../selectedActorId)}}selected{{/if}}>{{this.name}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <button type="button" class="btn-grant-item" data-action="grantItem" data-item-id="{{selectedItem._id}}">
+            <i class="fas fa-gift"></i> {{localize 'ITENSMAGICOS.Browser.GrantItem'}}
+          </button>
+        </div>
+
+        {{#if attunementStatus}}
+        <div class="attunement-alert {{#if attunementStatus.eligible}}success{{else}}warning{{/if}}">
+          <i class="fas {{#if attunementStatus.eligible}}fa-check-circle{{else}}fa-exclamation-triangle{{/if}}"></i>
+          <span>{{localize 'ITENSMAGICOS.Browser.AttunementSlots'}}: {{attunementStatus.currentCount}} / {{attunementStatus.maxCount}}</span>
+          {{#if attunementStatus.reason}}
+          <small class="attunement-reason">({{attunementStatus.reason}})</small>
+          {{/if}}
+        </div>
+        {{/if}}
+
+        <!-- Formatted Description -->
+        <div class="preview-description">
+          {{{selectedItem.system.description.value}}}
+        </div>
+      </article>
+      {{else}}
+      <div class="empty-preview">
+        <i class="fas fa-hat-wizard"></i>
+        <p>{{localize 'ITENSMAGICOS.Browser.SelectItemPrompt'}}</p>
+      </div>
+      {{/if}}
+    </section>
+  </main>
+</div>
