@@ -1,3 +1,6 @@
+import { CompendiumSync } from "./compendium-sync.mjs";
+import { MidiQOLCompat } from "./midi-qol-compat.mjs";
+
 const MODULE_ID = "itensmagicos";
 
 /**
@@ -13,10 +16,15 @@ Hooks.once("init", () => {
 Hooks.once("ready", () => {
   console.log("Itens Mágicos | Module ready for use.");
 
+  CompendiumSync.init();
+  MidiQOLCompat.init();
+
   const module = game.modules.get(MODULE_ID);
   if (module) {
     module.api = {
-      MODULE_ID
+      MODULE_ID,
+      CompendiumSync,
+      MidiQOLCompat
     };
   }
 });

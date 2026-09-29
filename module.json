@@ -17,6 +17,15 @@
           "minimum": "3.0.0"
         }
       }
+    ],
+    "recommends": [
+      {
+        "id": "midi-qol",
+        "type": "module",
+        "compatibility": {
+          "minimum": "11.0.0"
+        }
+      }
     ]
   },
   "authors": [
