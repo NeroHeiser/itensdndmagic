@@ -1,0 +1,64 @@
+{
+  "id": "itensmagicos",
+  "title": "Itens Mágicos (Magic Items Expansion)",
+  "description": "Expansão e catálogo de itens mágicos para D&D 5e no Foundry Virtual Tabletop (v12-v14), com compêndios bilíngues e automações.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12",
+    "maximum": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "3.0.0"
+        }
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "Lopes",
+      "url": "https://github.com/NeroHeiser"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/style.css"
+  ],
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packs": [
+    {
+      "name": "magic-items",
+      "label": "Itens Mágicos",
+      "path": "packs/magic-items",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "url": "https://github.com/NeroHeiser/itensmagicos",
+  "manifest": "https://raw.githubusercontent.com/NeroHeiser/itensmagicos/main/module.json",
+  "download": "https://github.com/NeroHeiser/itensmagicos/archive/refs/heads/main.zip",
+  "readme": "https://github.com/NeroHeiser/itensmagicos/blob/main/README.md",
+  "bugs": "https://github.com/NeroHeiser/itensmagicos/issues"
+}

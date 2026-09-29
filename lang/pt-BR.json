@@ -1,0 +1,14 @@
+{
+  "ITENSMAGICOS": {
+    "Title": "Itens Mágicos",
+    "Description": "Expansão e catálogo de itens mágicos para D&D 5e.",
+    "Browser": {
+      "Title": "Catálogo de Itens Mágicos",
+      "SearchPlaceholder": "Buscar itens mágicos...",
+      "FilterRarity": "Filtrar por Raridade",
+      "FilterType": "Filtrar por Tipo",
+      "FilterAttunement": "Sintonização",
+      "GrantItem": "Enviar para Ficha"
+    }
+  }
+}

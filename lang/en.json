@@ -1,0 +1,14 @@
+{
+  "ITENSMAGICOS": {
+    "Title": "Magic Items",
+    "Description": "Magic items expansion and automation for D&D 5e.",
+    "Browser": {
+      "Title": "Magic Items Browser",
+      "SearchPlaceholder": "Search magic items...",
+      "FilterRarity": "Filter by Rarity",
+      "FilterType": "Filter by Type",
+      "FilterAttunement": "Attunement",
+      "GrantItem": "Send to Sheet"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "itensmagicos",
+  "version": "1.0.0",
+  "description": "Magic items expansion and automation for Foundry Virtual Tabletop (D&D 5e)",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "author": "Lopes",
+  "license": "MIT"
+}
