@@ -80,17 +80,35 @@ export class CompendiumSync {
       const documents = await response.json();
       console.log(`Itens Mágicos | Populating compendium '${packDef.id}' with ${documents.length} items (${langFolder})...`);
 
-      if (options.force && index.size > 0) {
-        const docIds = Array.from(index.keys());
-        for (const id of docIds) {
-          const doc = await pack.getDocument(id);
-          if (doc) await doc.delete();
-        }
+      // Ensure compendium is explicitly unlocked on the server before write operations
+      const wasLocked = pack.locked;
+      try {
+        await pack.configure({ locked: false });
+      } catch (err) {
+        try { pack.locked = false; } catch (_) {}
       }
 
-      const DocumentClass = getDocumentClass(packDef.documentName);
-      await DocumentClass.createDocuments(documents, { pack: pack.collection, keepId: true });
-      syncedCount++;
+      try {
+        if (options.force && index.size > 0) {
+          const docIds = Array.from(index.keys());
+          for (const id of docIds) {
+            const doc = await pack.getDocument(id);
+            if (doc) await doc.delete();
+          }
+        }
+
+        const DocumentClass = getDocumentClass(packDef.documentName);
+        await DocumentClass.createDocuments(documents, { pack: pack.collection, keepId: true });
+        syncedCount++;
+      } finally {
+        if (wasLocked) {
+          try {
+            await pack.configure({ locked: true });
+          } catch (_) {
+            try { pack.locked = true; } catch (_) {}
+          }
+        }
+      }
     }
 
     return syncedCount;
