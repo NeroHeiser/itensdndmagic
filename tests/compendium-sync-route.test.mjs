@@ -31,3 +31,25 @@ test("resolveBaseRoute falls back to leading slash module path without foundry g
     globalThis.foundry = originalFoundry;
   }
 });
+
+test("CompendiumSync.chunkArray splits arrays cleanly into chunks", () => {
+  assert.deepEqual(CompendiumSync.chunkArray([], 50), []);
+  assert.deepEqual(CompendiumSync.chunkArray(null, 50), []);
+
+  const items = Array.from({ length: 550 }, (_, i) => ({ id: i }));
+  const chunks = CompendiumSync.chunkArray(items, 200);
+
+  assert.equal(chunks.length, 3);
+  assert.equal(chunks[0].length, 200);
+  assert.equal(chunks[1].length, 200);
+  assert.equal(chunks[2].length, 150);
+});
+
+test("CompendiumSync.chunkArray enforces positive integer minimum size", () => {
+  const items = [1, 2, 3];
+  const chunks = CompendiumSync.chunkArray(items, 0);
+
+  assert.equal(chunks.length, 3);
+  assert.deepEqual(chunks, [[1], [2], [3]]);
+});
+

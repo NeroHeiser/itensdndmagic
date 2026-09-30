@@ -40,6 +40,21 @@
       "SelectItemPrompt": "Selecione um item da lista para ver os detalhes.",
       "NoActorSelected": "Por favor, selecione primeiro uma ficha de personagem alvo.",
       "ItemGranted": "{item} foi enviado para a ficha de {actor}."
+    },
+    "Settings": {
+      "SyncMenu": {
+        "Name": "Sincronizar Compêndios",
+        "Label": "Sincronizar Compêndios",
+        "Hint": "Sincroniza e atualiza os compêndios do módulo com os dados mais recentes."
+      }
+    },
+    "Compendium": {
+      "SyncStart": "Iniciando sincronização dos compêndios de itens mágicos...",
+      "SyncSuccess": "Compêndios de itens mágicos sincronizados com sucesso.",
+      "SyncDialogTitle": "Sincronizar Compêndios de Itens Mágicos",
+      "SyncDialogContent": "Esta operação irá repovoar os compêndios de itens mágicos a partir dos dados do módulo. Deseja continuar?",
+      "SyncNow": "Sincronizar Agora",
+      "Cancel": "Cancelar"
     }
   }
 }

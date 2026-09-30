@@ -51,9 +51,26 @@ export class CompendiumSync {
   }
 
   /**
+   * Splits an array into smaller chunks for batch processing.
+   * @param {Array<any>} array
+   * @param {number} [size=200]
+   * @returns {Array<Array<any>>}
+   */
+  static chunkArray(array, size = 200) {
+    if (!Array.isArray(array)) return [];
+    const validSize = Math.max(1, Math.floor(size));
+    const chunks = [];
+    for (let i = 0; i < array.length; i += validSize) {
+      chunks.push(array.slice(i, i + validSize));
+    }
+    return chunks;
+  }
+
+  /**
    * Synchronizes all registered compendium packs with their JSON data sources.
    * @param {object} [options={}]
    * @param {boolean} [options.force=false] - Force repopulation even if pack is not empty.
+   * @param {number} [options.chunkSize=200] - Document batch creation size.
    * @returns {Promise<number>} - Count of synchronized packs.
    */
   static async syncAll(options = {}) {
@@ -104,7 +121,10 @@ export class CompendiumSync {
         }
 
         const DocumentClass = getDocumentClass(packDef.documentName);
-        await DocumentClass.createDocuments(documents, { pack: pack.collection, keepId: true });
+        const chunks = this.chunkArray(documents, options.chunkSize || 200);
+        for (const chunk of chunks) {
+          await DocumentClass.createDocuments(chunk, { pack: pack.collection, keepId: true });
+        }
         syncedCount++;
       } finally {
         if (wasLocked) {

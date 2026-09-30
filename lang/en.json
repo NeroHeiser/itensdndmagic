@@ -40,6 +40,21 @@
       "SelectItemPrompt": "Select an item from the list to preview details.",
       "NoActorSelected": "Please select a target character sheet first.",
       "ItemGranted": "Granted {item} to {actor}."
+    },
+    "Settings": {
+      "SyncMenu": {
+        "Name": "Synchronize Compendiums",
+        "Label": "Sync Compendiums",
+        "Hint": "Synchronize and update module compendiums with latest item data."
+      }
+    },
+    "Compendium": {
+      "SyncStart": "Starting magic items compendium synchronization...",
+      "SyncSuccess": "Successfully synchronized magic items compendiums.",
+      "SyncDialogTitle": "Sync Magic Items Compendiums",
+      "SyncDialogContent": "This operation will repopulate the magic items compendiums from the module data. Do you wish to continue?",
+      "SyncNow": "Sync Now",
+      "Cancel": "Cancel"
     }
   }
 }
