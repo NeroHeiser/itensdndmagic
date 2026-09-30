@@ -29,6 +29,16 @@ This architectural document details the engineering principles, data pipelines, 
 - **Problem:** Adding hard dependencies on Midi-QOL breaks the module for game masters who prefer native or alternative combat systems.
 - **Solution:** Implemented [`MidiQOLCompat`](file:///run/media/lopes/Hd%20interno/Programa%C3%A7%C3%A3o/Foundry/itensmagicos/scripts/midi-qol-compat.mjs) with defensive hook binding. Pre-configured combat actions (`mwak`/`rwak`), damage formulas, and flags on weapons so that Midi-QOL can immediately automate attacks and saves when present, while operating cleanly in native D&D 5e when inactive.
 
+### Decision 5: Non-Blocking Chunked Compendium Batching & Lifecycle Resilience
+- **Problem:** Transmitting 1,714 items in a single WebSocket transaction can exceed payload limits and freeze the client UI on moderate desktop hardware. Furthermore, registering `ready` hooks inside another `ready` callback causes silent listener drops.
+- **Solution:** Implemented `CompendiumSync.chunkArray` batching documents into chunks of 200 items, and updated `CompendiumSync.init()` and `MidiQOLCompat.init()` to register during `init` and verify `game.ready` for immediate execution if invoked post-initialization. Added a GM manual synchronization menu in `game.settings`.
+- **Benefits:** Reliable compendium population without WebSocket buffer overflows or dropped lifecycle events.
+
+### Decision 6: Defensive Deep Cloning in ApplicationV2 Item Granting
+- **Problem:** Passing cached compendium item objects directly into `actor.createEmbeddedDocuments` mutates cached memory references and preserves source compendium IDs. In addition, `data-action` on `<select>` elements fails to trigger on `change`.
+- **Solution:** Created `grantItem(itemId, actorId)` with defensive deep cloning (`foundry.utils.duplicate` / `structuredClone`), stripping `_id` before embedded document creation, and bound explicit `change` listeners on `select[name='targetActor']` in `_onRender`.
+- **Benefits:** Cache immutability, unique document IDs per actor, and seamless reactive updates in the browser UI.
+
 ---
 
 ## 3. Test Suite & Verification
@@ -43,10 +53,11 @@ npm test
 ### Coverage Breakdown
 - `tests/manifest.test.mjs`: Validates `module.json` and `package.json` compatibility, physical file presence, and pack configurations.
 - `tests/compendium-integrity.test.mjs`: Verifies 1,714 items in both locales, 16-character alphanumeric ID validity, rarity values, attunement flags, and weapon damage parts.
-- `tests/compendium-sync-route.test.mjs`: Verifies proxy-aware route resolution with and without global `foundry` objects.
+- `tests/compendium-sync-route.test.mjs`: Verifies proxy-aware route resolution and array chunking algorithms.
+- `tests/lifecycle-hooks.test.mjs`: Verifies lifecycle hook registration and immediate post-ready execution for `CompendiumSync` and `MidiQOLCompat`.
 - `tests/magic-item-engine.test.mjs`: Comprehensive verification of DMG/Xanathar market pricing, attunement slot constraints, charge parsing regex, and multi-criteria filters.
-- `tests/browser-app.test.mjs`: Asserts ApplicationV2 default options, initial filter states, template structure, and context preparation.
+- `tests/browser-app.test.mjs`: Asserts ApplicationV2 default options, initial filter states, template structure, actor selection listeners, and defensive item granting.
 - `tests/localization.test.mjs`: Guarantees 100% key symmetry between `lang/en.json` and `lang/pt-BR.json` and ensures zero undefined keys in Handlebars templates.
 - `tests/midi-qol-compat-source-id.test.mjs`: Validates item ID resolution across compendium flags, core source IDs, and direct IDs.
 
-**Current Test Metric:** 28 passing, 0 failing.
+**Current Test Metric:** 36 passing, 0 failing.
