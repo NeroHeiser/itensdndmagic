@@ -7,10 +7,10 @@ const MODULE_ID = "itensmagicos";
  */
 export class MidiQOLCompat {
   /**
-   * Initializes Midi-QOL compatibility listener.
+   * Initializes Midi-QOL compatibility listener on the ready hook or immediately if game is ready.
    */
   static init() {
-    Hooks.once("ready", () => {
+    const onReady = () => {
       const isMidiActive = typeof game !== "undefined" && game.modules?.get("midi-qol")?.active;
 
       if (isMidiActive) {
@@ -19,7 +19,13 @@ export class MidiQOLCompat {
       } else {
         console.log("Itens Mágicos | Midi-QOL not active. Operating in native D&D 5e mode.");
       }
-    });
+    };
+
+    if (typeof game !== "undefined" && game.ready) {
+      onReady();
+    } else if (typeof Hooks !== "undefined") {
+      Hooks.once("ready", onReady);
+    }
   }
 
   /**

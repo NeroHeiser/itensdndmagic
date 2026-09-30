@@ -30,18 +30,24 @@ export class CompendiumSync {
   }
 
   /**
-   * Initializes compendium synchronization on the ready hook.
+   * Initializes compendium synchronization on the ready hook or immediately if game is ready.
    */
   static init() {
-    Hooks.once("ready", async () => {
-      if (!game.user.isGM) return;
+    const onReady = async () => {
+      if (typeof game === "undefined" || !game.user?.isGM) return;
 
       try {
         await this.syncAll();
       } catch (err) {
         console.error(`Itens Mágicos | Error synchronizing compendiums:`, err);
       }
-    });
+    };
+
+    if (typeof game !== "undefined" && game.ready) {
+      onReady();
+    } else if (typeof Hooks !== "undefined") {
+      Hooks.once("ready", onReady);
+    }
   }
 
   /**

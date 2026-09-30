@@ -11,6 +11,9 @@ const MODULE_ID = "itensmagicos";
 Hooks.once("init", () => {
   console.log("Itens Mágicos | Initializing module...");
 
+  CompendiumSync.init();
+  MidiQOLCompat.init();
+
   // Register settings menu for browser access
   game.settings?.registerMenu?.(MODULE_ID, "browserMenu", {
     name: "ITENSMAGICOS.Browser.Title",
@@ -27,9 +30,6 @@ Hooks.once("init", () => {
  */
 Hooks.once("ready", () => {
   console.log("Itens Mágicos | Module ready for use.");
-
-  CompendiumSync.init();
-  MidiQOLCompat.init();
 
   const module = game.modules.get(MODULE_ID);
   if (module) {
