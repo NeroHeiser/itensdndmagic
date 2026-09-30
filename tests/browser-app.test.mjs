@@ -77,3 +77,86 @@ test("MagicItemsBrowserApp _prepareContext returns structured data with fallback
   assert.equal(context.selectedItem.name, "Moonblade");
   assert.equal(context.priceInfo.standard, 100000);
 });
+
+test("MagicItemsBrowserApp grantItem creates item on actor with deep clone and stripped _id", async () => {
+  const originalGame = globalThis.game;
+  const originalUi = globalThis.ui;
+
+  try {
+    let createdPayload = null;
+    const mockActor = {
+      id: "actor123",
+      name: "Valeros",
+      createEmbeddedDocuments: async (embeddedName, items) => {
+        createdPayload = items;
+        return items;
+      }
+    };
+
+    globalThis.game = {
+      actors: {
+        get: (id) => (id === "actor123" ? mockActor : null)
+      },
+      i18n: {
+        localize: (k) => k,
+        format: (k, data) => `${k}: ${data.item} -> ${data.actor}`
+      }
+    };
+    globalThis.ui = {
+      notifications: {
+        info: () => {},
+        warn: () => {}
+      }
+    };
+
+    const app = new MagicItemsBrowserApp();
+    const sourceItem = {
+      _id: "original_compendium_id",
+      name: "Flame Tongue",
+      type: "weapon",
+      system: { rarity: "rare" }
+    };
+
+    app.getItems = async () => [sourceItem];
+
+    const result = await app.grantItem("original_compendium_id", "actor123");
+
+    assert.ok(result);
+    assert.equal(createdPayload.length, 1);
+    assert.equal(createdPayload[0].name, "Flame Tongue");
+    assert.equal(createdPayload[0]._id, undefined, "_id must be stripped from the granted item");
+    assert.equal(sourceItem._id, "original_compendium_id", "Original cached item must retain its _id");
+  } finally {
+    globalThis.game = originalGame;
+    globalThis.ui = originalUi;
+  }
+});
+
+test("MagicItemsBrowserApp _onRender binds targetActor change event listener", () => {
+  const app = new MagicItemsBrowserApp();
+
+  let changeListener = null;
+  const mockSelect = {
+    addEventListener: (event, handler) => {
+      if (event === "change") changeListener = handler;
+    }
+  };
+
+  app.element = {
+    querySelector: (selector) => {
+      if (selector === "select[name='targetActor']") return mockSelect;
+      return null;
+    }
+  };
+
+  app.render = () => {};
+
+  app._onRender({}, {});
+
+  assert.ok(typeof changeListener === "function", "change listener must be registered on select[name='targetActor']");
+
+  // Trigger change
+  changeListener({ target: { value: "new_actor_456" } });
+  assert.equal(app.selectedActorId, "new_actor_456");
+});
+

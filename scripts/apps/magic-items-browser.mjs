@@ -213,6 +213,14 @@ export class MagicItemsBrowserApp extends BaseApplication {
         this.render();
       });
     }
+
+    const actorSelect = html.querySelector("select[name='targetActor']");
+    if (actorSelect) {
+      actorSelect.addEventListener("change", event => {
+        this.selectedActorId = event.target.value;
+        this.render();
+      });
+    }
   }
 
   static #onSelectItem(event, target) {
@@ -245,23 +253,36 @@ export class MagicItemsBrowserApp extends BaseApplication {
     this.render();
   }
 
-  static async #onGrantItem(event, target) {
-    const itemId = target.dataset.itemId || this.selectedItemId;
-    if (!itemId) return;
+  /**
+   * Grants a magic item to a designated actor sheet with defensive cloning.
+   * @param {string} [itemId=this.selectedItemId]
+   * @param {string} [actorId=this.selectedActorId]
+   * @returns {Promise<Array<object>|null>}
+   */
+  async grantItem(itemId = this.selectedItemId, actorId = this.selectedActorId) {
+    if (!itemId) return null;
 
     const items = await this.getItems();
     const itemData = items.find(i => i._id === itemId);
-    if (!itemData) return;
+    if (!itemData) return null;
 
-    const actor = typeof game !== "undefined" && game.actors ? game.actors.get(this.selectedActorId) : null;
+    const actor = typeof game !== "undefined" && game.actors ? game.actors.get(actorId) : null;
     if (!actor) {
       if (typeof ui !== "undefined" && ui.notifications) {
         ui.notifications.warn(game.i18n.localize("ITENSMAGICOS.Browser.NoActorSelected"));
       }
-      return;
+      return null;
     }
 
-    await actor.createEmbeddedDocuments("Item", [itemData]);
+    // Defensive cloning to prevent mutating cached item reference in memory
+    const clonedData = typeof foundry !== "undefined" && foundry.utils?.duplicate
+      ? foundry.utils.duplicate(itemData)
+      : JSON.parse(JSON.stringify(itemData));
+
+    // Remove compendium _id so Foundry creates a fresh embedded document ID on the actor
+    delete clonedData._id;
+
+    const created = await actor.createEmbeddedDocuments("Item", [clonedData]);
 
     if (typeof ui !== "undefined" && ui.notifications) {
       ui.notifications.info(game.i18n.format("ITENSMAGICOS.Browser.ItemGranted", {
@@ -269,5 +290,12 @@ export class MagicItemsBrowserApp extends BaseApplication {
         actor: actor.name
       }));
     }
+
+    return created;
+  }
+
+  static async #onGrantItem(event, target) {
+    const itemId = target.dataset.itemId || this.selectedItemId;
+    await this.grantItem(itemId, this.selectedActorId);
   }
 }
